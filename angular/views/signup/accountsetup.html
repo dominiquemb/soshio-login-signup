@@ -1,0 +1,48 @@
+
+		<div class="col-md-5 panel panel-default pull-left signup">
+			<form name="signup-accountsetup" class="col-md-12 form-horizontal" role="form">
+				<div class="form-group">
+					<h2></h2>
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 account-name field form-control" type="text" placeholder="Account Name" required ng-model="signup.accountName" />
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 account-email field form-control" type="password" placeholder="Account Authorized User Email" required ng-model="signup.accountEmail" />
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 account-email field form-control" type="password" placeholder="Account Authorized First and Last Name" required ng-model="signup.accountAdminName" />
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 account-email field form-control" type="password" placeholder="Account Password" required ng-model="signup.accountPassword" />
+				</div>
+				<div class="form-group">
+					<label>Permission Level</label>
+					<select ng-model="signup.accountPermissions">
+						<option>Read-Only</option>
+						<option>Read and Write</option>
+					</select>
+				</div>
+				<div class="form-group">
+					User will be notified via email with temporary login password. User will be requested to change password at first login.
+				</div>
+				<div class="form-group">
+					<div class="pull-left">
+						<div class="btn btn-primary">Add User</div>
+					</div>
+					<div class="pull-right">
+						<a ng-click="to('signup.contactinfo')">
+							<div class="btn btn-primary">
+								Back
+							</div>
+						</a>
+						<a ng-click="to('signup.plans')">
+							<div class="btn btn-primary">
+								Save
+							</div>
+						</a>
+					</div>
+			
+				</div>
+			</form>
+		</div>

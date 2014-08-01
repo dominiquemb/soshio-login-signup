@@ -1,0 +1,33 @@
+
+		<div class="col-md-5 panel panel-default pull-left signup">
+			<form name="signup-contactinfo" class="col-md-12 form-horizontal" role="form">
+				<div class="form-group">
+					<h2>Sign Up</h2>
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 email field form-control" type="text" placeholder="Email" required ng-model="signup.email" />
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 password field form-control" type="password" placeholder="Password" required ng-model="signup.password" />
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 confirm-password field form-control" type="password" placeholder="Confirm Password" required ng-model="signup.confirmPassword" />
+				</div>
+				<div class="form-group">
+					<h2>(Administrator) Contact Information</h2>
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 first-name field form-control" type="text" placeholder="First Name" required ng-model="signup.firstName" />
+				</div>
+				<div class="form-group links">
+					<input class="col-md-12 last-name field form-control" type="text" placeholder="Last Name" required ng-model="signup.lastName" />
+				</div>
+				<div class="form-group links">
+					<input class="col-md-12 company field form-control" type="text" placeholder="Company Name" ng-model="signup.companyName" />
+				</div>
+				<div class="form-group links">
+					<input class="col-md-12 phone field form-control" type="text" placeholder="Phone Number" ng-model="signup.phoneNumber" />
+				</div>
+				<button class="btn btn-primary pull-right form-group" ng-click="to('signup.accountsetup')">Save</button>
+			</form>
+		</div>

@@ -1,0 +1,29 @@
+	<div class="login-navbar"></div>
+	<div class="main">
+		<img class="bg" src="img/signup-bg.jpg" />
+		<div class="col-md-5 panel panel-default login">
+			<form name="login-form" ng-submit="processLogin()" class="col-md-12 form-horizontal" role="form">
+				<div class="form-group">
+					<h2>Sign in to Soshio</h2>
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 email field form-control" type="text" placeholder="Email" ng-model="loginForm.email"/>
+				</div>
+				<div class="form-group">
+					<input class="col-md-12 password field form-control" type="password" placeholder="Password" ng-model="loginForm.password" />
+				</div>
+				<div class="form-group">
+					<button class="pull-left signin-button btn btn-primary" type="submit">Sign In</button>
+					<div class="pull-left remember-me checkbox">
+						<input type="checkbox" />Remember Me
+					</div>
+				</div>
+				<div class="form-group links">
+					<ul>
+						<li><a ng-click="to('signup.contactinfo')">Set Up Free Account</a></li>
+						<li><a>Forgot Password</a></li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</div>

@@ -1,0 +1,43 @@
+ul {
+	list-style: none;
+	padding: 0px;
+}
+
+.main {
+	width: 100%;
+	position: absolute;
+	top: 50px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	overflow-x: hidden;
+}
+
+body .main .panel {
+    transition:margin-left 2s;
+    -moz-transition:margin-left 2s; /* Firefox 4 */
+    -webkit-transition:margin-left 2s; /* Safari and Chrome */
+    -o-transition:margin-left 2s; /* Opera */	
+	padding: 20px;
+	margin: 50px;
+	margin-left: 50px;
+}
+
+
+body.exiting .main .panel {
+	margin-left: 9999px;
+}
+
+.main .bg {
+	position: absolute;
+	z-index: 0;
+	width: 100%;
+	height: auto;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+}
+
+.login .signin-button {
+	margin-right: 40px;
+}

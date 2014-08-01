@@ -1,0 +1,27 @@
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">Soshio</a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li><a href="#">中文</a></li>
+				<li><a href="#">User Information</a></li>
+				<li><a href="#">Log Out</a></li>
+			</ul>
+		</div>		
+	</nav>
+	<div class="dashboard-main container-fluid">
+		<div class="row">
+			<div class="col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a>Account: {{ user.accountName }}</a></li>
+					<li><a>Create New Project</a></li>
+					<li><a>Active Projects (<span class="projects-count">3</span>)</a></li>
+					<li><a>Past Projects (<span class="past-projects-count">23</span>)</a></li>
+				</ul>
+			</div>
+			<div class="col-md-10">
+				<div ui-view></div>
+			</div>
+		</div>
+	</div>
