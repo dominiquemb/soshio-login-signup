@@ -5,17 +5,17 @@
 					<div class="form-group">
 						<h2>Service Plan</h2>
 						<ul class="list-group">
-							<li ng-click="selectPlan('1')" class="list-group-item" ng-class="{active: isPlan('1')}">
+							<li ng-click="selectPlan('1', '500.00')" class="list-group-item" ng-class="{active: isPlan('1')}">
 								Monthly Standard Fee: $500
 								<br />
 								Variable Costs: $3 / 1,000 posts
 							</li>
-							<li ng-click="selectPlan('2')" class="list-group-item" ng-class="{active: isPlan('2')}">
+							<li ng-click="selectPlan('2', '2500.00')" class="list-group-item" ng-class="{active: isPlan('2')}">
 								Monthly Standard Fee: $2,500
 								<br />
 								Variable Costs: $1.50 / 1,000 posts
 							</li>
-							<li ng-click="selectPlan('3')" class="list-group-item" ng-class="{active: isPlan('3')}">
+							<li ng-click="selectPlan('3', '10000.00')" class="list-group-item" ng-class="{active: isPlan('3')}">
 								Monthly Standard Fee: $10,000
 								<br />
 								Variable Costs: $0.60 / 1,000 posts
@@ -48,16 +48,19 @@
 					</div>
 					<div ng-hide="isCard('paypal')">
 						<div class="form-group">
-							<input class="card-name field form-control" type="text" placeholder="Name on Card" required ng-model="signup.cardName" />
+							<input class="card-name field form-control" type="text" placeholder="Name on Card" required ng-model="cardInfo.cardName" />
 						</div>
 						<div class="form-group">
-							<input class="card-number field form-control" type="text" placeholder="Card Number" required ng-model="signup.cardNumber" />
+							<input class="card-number field form-control" type="text" placeholder="Card Number" required ng-model="cardInfo.cardNumber" />
 						</div>
 						<div class="form-group">
-							<input class="card-security-num field form-control" type="text" placeholder="Sec. #" required ng-model="signup.cardSecNumber" />
+							<input class="card-security-num field form-control" type="text" placeholder="Sec. #" required ng-model="cardInfo.cardSecNumber" />
 						</div>
 						<div class="form-group">
-							<input class="card-expiry field form-control" type="text" placeholder="Valid Through (mm/yy)" required ng-model="signup.cardExpiry" />
+							<input class="card-expiry field form-control" type="text" placeholder="Expiry Month" required ng-model="cardInfo.cardExpiryMonth" />
+						</div>
+						<div class="form-group">
+							<input class="card-expiry field form-control" type="text" placeholder="Expiry Year" required ng-model="cardInfo.cardExpiryYear" />
 						</div>
 						<div class="form-group">
 							<div class="pull-right">

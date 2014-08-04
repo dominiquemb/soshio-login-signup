@@ -1,20 +1,26 @@
 loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $state, $http, LoginService) {
+	$scope.publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5';
+	$scope.publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq';
+
 	$scope.signup = {
 		users: []
 	};
 
+	$scope.cardInfo = {};
+
 	$scope.numUsers = 0;
 
-	$scope.selectPlan = function(plan) {
+	$scope.selectPlan = function(plan, planFee) {
 		$scope.signup.plan = plan;
+		$scope.signup.planFee = planFee;
 	}
 
 	$scope.selectCard = function(card) {
-		$scope.signup.cardType = card;
+		$scope.cardInfo.cardType = card;
 	}
 
 	$scope.isCard = function(card) {
-		return $scope.signup.cardType === card;
+		return $scope.cardInfo.cardType === card;
 	}
 
 	$scope.isPlan = function(plan) {
@@ -22,18 +28,43 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 	}
 
 	$scope.processSignup = function() {
+		var amtArray = $scope.signup.planFee.split('.'),
+		centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
+
+		Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
+
+		Stripe.card.createToken({
+			number: $scope.cardInfo.cardNumber,
+			cvc: $scope.cardInfo.cardSecNumber,
+			exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
+			exp_year: $scope.cardInfo.cardExpiryYear,
+		}, centAmt);
+
 		$http({
-			method: 'POST', 
-			params: $scope.signup,
-			url: 'http://localhost:8080/signup'
+			method: 'POST',
+			params: {
+				token: $scope.signup.token,
+				centAmt: centAmt,
+				email: $scope.signup.email
+			},
+			url: 'http://localhost:8080/payment'
 		}).
-		success(function(data, status, headers, config) {
-			LoginService.user = data.user;
-			$state.go('account.snapshot');
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error');
-			console.log(data);
-		});	
+		success(function(data) {
+			if (data.error) {
+				// replace this with something else later
+				console.log(data.error);
+			}
+			else {
+				$http({
+					method: 'POST', 
+					params: $scope.signup,
+					url: 'http://localhost:8080/signup'
+				}).
+				success(function(data, status, headers, config) {
+					LoginService.user = data.user;
+					$state.go('account.snapshot');
+				});
+			}
+		});
 	}
 });
