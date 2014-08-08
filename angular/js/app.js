@@ -43,7 +43,7 @@ var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
 	    });
     });
 
-loginApp.service('LoginService', function(ipCookie) {
+loginApp.service('LoginService', function($http, ipCookie) {
 	return {
 		user: false,
                	login: function(token, rememberMe, user) {
@@ -52,7 +52,8 @@ loginApp.service('LoginService', function(ipCookie) {
                                 ipCookie(
                                         'soshioSession',
                                         JSON.stringify({
-						'session': token
+						'session': token,
+						'rememberMe': rememberMe
                                         }),
                                         {expires: 7}
                                 );
@@ -62,17 +63,37 @@ loginApp.service('LoginService', function(ipCookie) {
                                         'soshioSession',
                                         JSON.stringify({
                                                 'session': token,
+						'rememberMe': rememberMe
                                         }),
                                         {expires: 1}
                                 );
                         }
 			this.user = user;
                 },
-                logOut: function() {
-                        ipCookie.remove('soshioSession');
-                        document.execCommand("ClearAuthenticationCache");
+                logOut: function($state) {
+			$http({
+				method: 'GET',
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/logout'
+			}).
+			success(function(data, status, headers, config) {
+				if (data.loggedOut) {
+					$state.go('login');
+					ipCookie.remove('soshioSession');
+					document.execCommand("ClearAuthenticationCache");
+				}
+			});
                 },
-
+		getUser: function(callback) {
+			$http({
+				method: 'GET',
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/profile'
+			}).
+			success(function(data, status, headers, config) {
+				if (callback) {
+					callback(data);
+				}
+			});
+		},
                 confirmLoggedIn: function($state) {
                         if (ipCookie('soshioSession') === undefined) {
                                 $state.go('login');

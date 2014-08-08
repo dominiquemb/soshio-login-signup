@@ -42,6 +42,14 @@ body.exiting .main .panel {
 	margin-right: 40px;
 }
 
-.user-information .links {
-	text-align: center;
+.user-information-summary {
+	margin-left: 10px;
+	font-size: 22px;
+}
+
+.default-user-photo {
+	width: 100px;
+	height: 100px;
+	display: block;
+	background:url('../img/sprites.png') 0px 0px;
 }

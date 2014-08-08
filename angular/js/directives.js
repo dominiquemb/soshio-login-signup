@@ -12,3 +12,10 @@ loginApp.directive('loginNavbar', function() {
 		controller: 'NavbarController'
 	}
 });
+
+loginApp.directive('userInformationBlurb', function() {
+	return {
+		restrict: 'ACE',
+		templateUrl: 'views/modules/userinformationblurb.html'
+	}
+});
