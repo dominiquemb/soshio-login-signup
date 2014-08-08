@@ -1,4 +1,6 @@
 loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $state, $http, LoginService) {
+	LoginService.logOut();
+
 	$scope.publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5';
 	$scope.publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq';
 
@@ -47,7 +49,7 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 				centAmt: centAmt,
 				email: $scope.signup.email
 			},
-			url: 'http://localhost:8080/payment'
+			url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
 		}).
 		success(function(data) {
 			if (data.error) {
@@ -58,7 +60,7 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 				$http({
 					method: 'POST', 
 					params: $scope.signup,
-					url: 'http://localhost:8080/signup'
+					url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
 				}).
 				success(function(data, status, headers, config) {
 					LoginService.user = data.user;

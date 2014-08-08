@@ -41,3 +41,7 @@ body.exiting .main .panel {
 .login .signin-button {
 	margin-right: 40px;
 }
+
+.user-information .links {
+	text-align: center;
+}

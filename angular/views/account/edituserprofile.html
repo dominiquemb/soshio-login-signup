@@ -1,0 +1,52 @@
+			<div class="edit-user-profile">
+				<div class="row">
+					<div class="pull-left">
+						<span class="pull-right">img goes here</span>
+					</div>
+					<div class="pull-left" class="user-information-summary">
+						<ul>
+							<li>User: {{ user.name }}</li>
+							<li># Accounts: {{ user.accounts.length }}</li>
+							<li>Email: {{ user.email }}</li>
+							<li>Phone: {{ user.phone }}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row">
+					<form class="col-md-11" name="edit-user-profile" ng-submit="editUserProfile()">
+						<h2>Login Infomation</h2>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Email" />
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="Password" />
+						</div>
+					
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="Confirm Password" />
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="Confirm Password" />
+						</div>
+						<h2>Profile Information</h2>
+						
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="First Name" />
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Last Name" />
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Company Name" />
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Email" />
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Phone Number" />
+						</div>
+						<button class="btn btn-primary" ui-sref="account.userinformation">Cancel</button>
+						<button class="btn btn-primary" type="submit">Save</button>
+					</form>
+				</div>
+			</div>

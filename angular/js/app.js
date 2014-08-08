@@ -1,4 +1,4 @@
-var loginApp = angular.module('loginApp', ['ui.router'])
+var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
     .config(function ($stateProvider, $urlRouterProvider) {
 	    $urlRouterProvider.otherwise('/login');	    
 	    $stateProvider
@@ -29,15 +29,57 @@ var loginApp = angular.module('loginApp', ['ui.router'])
 		    templateUrl: "views/account/account.html",
 		    controller: "AccountController"
 	    })
+	    .state('account.userinformation', {
+		    url: "/user-information",
+		    templateUrl: "views/account/userinformation.html",
+	    })
+	    .state('account.edituserprofile', {
+		    url: "/edit-user-profile",
+		    templateUrl: "views/account/edituserprofile.html",
+	    })
 	    .state('account.snapshot', {
 		    url: "/snapshot",
 		    templateUrl: "views/account/accountsnapshot.html",
 	    });
     });
 
-loginApp.service('LoginService', function() {
+loginApp.service('LoginService', function(ipCookie) {
 	return {
-		isLoggedIn: false,
-		user: false
+		user: false,
+               	login: function(token, rememberMe, user) {
+                        this.isLoggedIn = true;
+                        if (rememberMe) {
+                                ipCookie(
+                                        'soshioSession',
+                                        JSON.stringify({
+						'session': token
+                                        }),
+                                        {expires: 7}
+                                );
+                        }
+                        else {
+                                ipCookie(
+                                        'soshioSession',
+                                        JSON.stringify({
+                                                'session': token,
+                                        }),
+                                        {expires: 1}
+                                );
+                        }
+			this.user = user;
+                },
+                logOut: function() {
+                        ipCookie.remove('soshioSession');
+                        document.execCommand("ClearAuthenticationCache");
+                },
+
+                confirmLoggedIn: function($state) {
+                        if (ipCookie('soshioSession') === undefined) {
+                                $state.go('login');
+                                return false;
+                        }
+                        return true;
+                }
 	}
+
 });
