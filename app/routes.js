@@ -1,4 +1,5 @@
 // app/routes.js
+var User       		= require('../app/models/user');
 module.exports = function(app, passport, path) {
 
 	// =====================================
@@ -70,6 +71,23 @@ module.exports = function(app, passport, path) {
 		req.logout();
 		res.json({'loggedOut': true});
 	});
+
+	// Update user
+	app.post('/update', function(req, res) {
+		var field;
+		User.findOne({_id: req.user._id}, function(err, user) {
+			for (field in user.local) {
+				if (req.query[field] && field !== 'password') {
+					user.local[field] = req.query[field];
+				}
+				else if (field == 'password') {
+					user.local.password = user.generateHash(req.query['newPassword']);
+				}
+			} 
+			user.save();
+			res.json({'user': user});
+		});
+	});
 };
 
 // route middleware to make sure a user is logged in
@@ -80,7 +98,7 @@ function isLoggedIn(req, res, next) {
 		return next();
 
 	// if they aren't redirect them to the home page
-	res.redirect('/');
+	res.json({'error': 'Not logged in'});
 }
 
 
