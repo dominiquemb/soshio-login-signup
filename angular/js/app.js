@@ -70,14 +70,16 @@ loginApp.service('LoginService', function($http, ipCookie) {
                         }
 			this.user = user;
                 },
-                logOut: function($state) {
+                logOut: function($state, stayOnPage) {
 			$http({
 				method: 'GET',
 				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/logout'
 			}).
 			success(function(data, status, headers, config) {
 				if (data.loggedOut) {
-					$state.go('login');
+					if (!stayOnPage) {
+						$state.go('login');
+					}
 					ipCookie.remove('soshioSession');
 					document.execCommand("ClearAuthenticationCache");
 				}

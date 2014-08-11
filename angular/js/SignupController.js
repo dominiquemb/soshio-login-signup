@@ -1,5 +1,5 @@
 loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $state, $http, LoginService) {
-	LoginService.logOut();
+	LoginService.logOut($state, true);
 
 	$scope.publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5';
 	$scope.publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq';
@@ -32,7 +32,7 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 	$scope.processSignup = function() {
 		if ($scope.signup.password === $scope.signup.confirmPassword) {
 			$scope.signup.signupPassword = CryptoJS.SHA3($scope.signup.password);
-
+/*
 			var amtArray = $scope.signup.planFee.split('.'),
 			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
 
@@ -60,16 +60,18 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 					console.log(data.error);
 				}
 				else {
-					$http({
-						method: 'POST', 
-						params: $scope.signup,
-						url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
-					}).
-					success(function(data, status, headers, config) {
-						LoginService.user = data.user;
-						$state.go('account.snapshot');
-					});
 				}
+			});
+*/
+			$http({
+				method: 'POST', 
+				params: $scope.signup,
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
+			}).
+			success(function(data, status, headers, config) {
+				LoginService.user = data.user;
+				LoginService.login(data.user._id, false, data.user);
+				$state.go('account.snapshot');
 			});
 		}
 	}

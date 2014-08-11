@@ -1,6 +1,6 @@
 
 		<div class="col-md-5 panel panel-default pull-left signup">
-			<form name="signup-contactinfo" class="col-md-12 form-horizontal" role="form">
+			<form name="signup-contactinfo" class="col-md-12 form-horizontal" role="form" ng-submit="processSignup()">
 				<div class="form-group">
 					<h2>Sign Up</h2>
 				</div>
@@ -28,6 +28,6 @@
 				<div class="form-group links">
 					<input class="col-md-12 phone field form-control" type="text" placeholder="Phone Number" ng-model="signup.phoneNumber" />
 				</div>
-				<button class="btn btn-primary pull-right form-group" ng-click="to('signup.accountsetup')">Save</button>
+				<button class="btn btn-primary pull-right form-group" type="submit">Save</button>
 			</form>
 		</div>

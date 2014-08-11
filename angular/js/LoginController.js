@@ -15,7 +15,7 @@ loginApp.controller('LoginController', function($scope, $rootScope, $timeout, $s
 			url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/login'
 		}).
 		success(function(data, status, headers, config) {
-			LoginService.login(data.user._id, ($scope.loginForm.rememberMe || false), data.user);
+			LoginService.login(data.user._id, ($scope.loginForm.rememberMe || false));
 			$state.go('account.snapshot');
 		}).
 		error(function(data, status, headers, config) {
