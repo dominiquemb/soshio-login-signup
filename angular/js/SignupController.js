@@ -30,43 +30,47 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 	}
 
 	$scope.processSignup = function() {
-		var amtArray = $scope.signup.planFee.split('.'),
-		centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
+		if ($scope.signup.password === $scope.signup.confirmPassword) {
+			$scope.signup.signupPassword = CryptoJS.SHA3($scope.signup.password);
 
-		Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
+			var amtArray = $scope.signup.planFee.split('.'),
+			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
 
-		Stripe.card.createToken({
-			number: $scope.cardInfo.cardNumber,
-			cvc: $scope.cardInfo.cardSecNumber,
-			exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
-			exp_year: $scope.cardInfo.cardExpiryYear,
-		}, centAmt);
+			Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
 
-		$http({
-			method: 'POST',
-			params: {
-				token: $scope.signup.token,
-				centAmt: centAmt,
-				email: $scope.signup.email
-			},
-			url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
-		}).
-		success(function(data) {
-			if (data.error) {
-				// replace this with something else later
-				console.log(data.error);
-			}
-			else {
-				$http({
-					method: 'POST', 
-					params: $scope.signup,
-					url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
-				}).
-				success(function(data, status, headers, config) {
-					LoginService.user = data.user;
-					$state.go('account.snapshot');
-				});
-			}
-		});
+			Stripe.card.createToken({
+				number: $scope.cardInfo.cardNumber,
+				cvc: $scope.cardInfo.cardSecNumber,
+				exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
+				exp_year: $scope.cardInfo.cardExpiryYear,
+			}, centAmt);
+
+			$http({
+				method: 'POST',
+				params: {
+					token: $scope.signup.token,
+					centAmt: centAmt,
+					email: $scope.signup.email
+				},
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
+			}).
+			success(function(data) {
+				if (data.error) {
+					// replace this with something else later
+					console.log(data.error);
+				}
+				else {
+					$http({
+						method: 'POST', 
+						params: $scope.signup,
+						url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
+					}).
+					success(function(data, status, headers, config) {
+						LoginService.user = data.user;
+						$state.go('account.snapshot');
+					});
+				}
+			});
+		}
 	}
 });

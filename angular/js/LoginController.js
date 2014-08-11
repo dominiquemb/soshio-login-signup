@@ -8,6 +8,7 @@ loginApp.controller('LoginController', function($scope, $rootScope, $timeout, $s
 	$scope.loginForm = {};
 
 	$scope.processLogin = function() {
+		$scope.loginForm.loginPassword = CryptoJS.SHA3($scope.loginForm.password);
 		$http({
 			method: 'POST', 
 			params: $scope.loginForm,
