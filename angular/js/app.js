@@ -16,18 +16,18 @@ var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
 		    url: "/contactinfo",
 		    templateUrl: "views/signup/contactinfo.html"
 	    })
-	    .state('signup.accountsetup', {
-		    url: "/accountsetup",
-		    templateUrl: "views/signup/accountsetup.html"
-	    })
-	    .state('signup.plans', {
-		    url: "/plans",
-		    templateUrl: "views/signup/planpayment.html"
-	    })
 	    .state('account', {
 		    url: "/account",
 		    templateUrl: "views/account/account.html",
 		    controller: "AccountController"
+	    })
+	    .state('account.accountsetup', {
+		    url: "/accountsetup",
+		    templateUrl: "views/account/accountsetup.html"
+	    })
+	    .state('account.plans', {
+		    url: "/plans",
+		    templateUrl: "views/account/planpayment.html"
 	    })
 	    .state('account.userinformation', {
 		    url: "/user-information",
