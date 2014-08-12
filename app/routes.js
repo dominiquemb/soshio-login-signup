@@ -81,7 +81,7 @@ module.exports = function(app, passport, path) {
 					user.local[field] = req.query[field];
 				}
 				else if (field == 'password') {
-					user.local.password = user.generateHash(req.query['newPassword']);
+					user.local.password = user.generateHash(req.query['password']);
 				}
 			} 
 			user.save();
