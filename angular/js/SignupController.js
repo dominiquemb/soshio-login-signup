@@ -31,7 +31,8 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 
 	$scope.processSignup = function() {
 		if ($scope.signup.password === $scope.signup.confirmPassword) {
-			$scope.signup.signupPassword = CryptoJS.SHA3($scope.signup.password);
+			var params = jQuery.extend(true, {}, $scope.signup.user);
+			params.password = CryptoJS.SHA3($scope.signup.password);
 /*
 			var amtArray = $scope.signup.planFee.split('.'),
 			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
@@ -65,7 +66,7 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 */
 			$http({
 				method: 'POST', 
-				params: $scope.signup,
+				params: params,
 				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
 			}).
 			success(function(data, status, headers, config) {

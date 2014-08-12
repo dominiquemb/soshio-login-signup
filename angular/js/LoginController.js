@@ -8,10 +8,11 @@ loginApp.controller('LoginController', function($scope, $rootScope, $timeout, $s
 	$scope.loginForm = {};
 
 	$scope.processLogin = function() {
-		$scope.loginForm.loginPassword = CryptoJS.SHA3($scope.loginForm.password);
+		var params = jQuery.extend(true, {}, $scope.loginForm);
+		params.password = CryptoJS.SHA3($scope.loginForm.password);
 		$http({
 			method: 'POST', 
-			params: $scope.loginForm,
+			params: params,
 			url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/login'
 		}).
 		success(function(data, status, headers, config) {

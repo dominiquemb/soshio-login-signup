@@ -22,10 +22,11 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 	
 	$scope.editUserProfile = function() {
 		if ($scope.editedUser.newPassword === $scope.editedUser.confirmPassword) {
-			$scope.editedUser.newPassword = CryptoJS.SHA3($scope.editedUser.newPassword);
+			var params = JSON.extend(true, {}, $scope.editedUser);
+			params.password = CryptoJS.SHA3($scope.editedUser.newPassword);
 			$http({
 				method: 'POST',
-				params: $scope.editedUser,
+				params: params,
 				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/update'
 			}).
 			success(function(data, status, headers, config) {
