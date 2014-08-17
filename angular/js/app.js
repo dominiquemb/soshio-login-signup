@@ -46,6 +46,110 @@ var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
 loginApp.service('LoginService', function($http, ipCookie) {
 	return {
 		user: false,
+		newUser: function(user, callback) {
+			var params = jQuery.extend(true, {}, user);
+			params.password = CryptoJS.SHA3(user.password);
+/*
+			var amtArray = $scope.signup.planFee.split('.'),
+			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
+
+			Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
+
+			Stripe.card.createToken({
+				number: $scope.cardInfo.cardNumber,
+				cvc: $scope.cardInfo.cardSecNumber,
+				exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
+				exp_year: $scope.cardInfo.cardExpiryYear,
+			}, centAmt);
+
+			$http({
+				method: 'POST',
+				params: {
+					token: $scope.signup.token,
+					centAmt: centAmt,
+					email: $scope.signup.email
+				},
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
+			}).
+			success(function(data) {
+				if (data.error) {
+					// replace this with something else later
+					console.log(data.error);
+				}
+				else {
+				}
+			});
+*/
+			$http({
+				method: 'POST', 
+				params: params,
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
+			}).
+			success(function(data, status, headers, config) {
+				if (callback) {
+					callback(data, status, headers, config);
+				}
+			});
+		},
+		addAccountUser: function(data, callback) {
+			if (data.account && data.user) {
+				var permissions = {};
+				angular.forEach(data.user.local.permissions, function(acct) {
+					parsedAcct = JSON.parse(acct);
+					if (parsedAcct.id === data.account.id) {
+						permissions = {
+							id: data.user._id,
+							perms: parsedAcct.perms,
+							firstName: data.user.local.firstName,
+							lastName: data.user.local.lastName,
+							email: data.user.local.email
+						};
+					}
+				});
+
+				if (!(data.account.permissions instanceof Array)) {
+					data.account.permissions = [permissions];
+				}
+				else {
+					data.account.permissions.push(permissions);
+				}
+
+				$http({
+					method: 'POST', 
+					params: data.account,
+					url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/accountupdate'
+				}).
+				success(function(data, status, headers, config) {
+					if (callback) {
+						callback(data, status, headers, config);
+					}
+				});
+			}
+		},
+		newAccount: function(params, callback) {
+			$http({
+				method: 'POST',
+				params: params,
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/accountsetup'
+			}).
+			success(function(data, status, headers, config) {
+				if (callback) {
+					callback(data, status, headers, config);
+				}
+			});
+		},
+		update: function(params, callback) {
+			$http({
+				method: 'POST',
+				params: params,
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/update'
+			}).
+			success(function(data, status, headers, config) {
+				if (callback) {
+					callback(data, status, headers, config);
+				}
+			});
+		},
                	login: function(token, rememberMe, user) {
                         this.isLoggedIn = true;
                         if (rememberMe) {
@@ -106,3 +210,9 @@ loginApp.service('LoginService', function($http, ipCookie) {
 	}
 
 });
+
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+    return result;
+}

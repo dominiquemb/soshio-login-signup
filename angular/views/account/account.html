@@ -14,7 +14,13 @@
 		<div class="row">
 			<div class="col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li class="active"><a>Account: {{ user.accountName }}</a></li>
+					<li class="active">
+						<a>Account: 
+							<select ng-model="sidebarAccount" ng-change="switchAccount(sidebarAccount)">
+								<option ng-repeat="acct in user.permissions" ng-selected="acct.name === user.permissions[0]"> {{ acct.name }}</option>
+							</select>
+						</a>
+					</li>
 					<li ui-sref="account.accountsetup"><a>Create New Account</a></li>
 					<li><a>Create New Project</a></li>
 					<li><a>Active Projects (<span class="projects-count">3</span>)</a></li>

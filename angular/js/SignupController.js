@@ -4,9 +4,7 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 	$scope.publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5';
 	$scope.publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq';
 
-	$scope.signup = {
-		users: []
-	};
+	$scope.signup = {};
 
 	$scope.cardInfo = {};
 
@@ -31,46 +29,8 @@ loginApp.controller('SignupController', function($scope, $rootScope, $timeout, $
 
 	$scope.processSignup = function() {
 		if ($scope.signup.password === $scope.signup.confirmPassword) {
-			var params = jQuery.extend(true, {}, $scope.signup.user);
-			params.password = CryptoJS.SHA3($scope.signup.password);
-/*
-			var amtArray = $scope.signup.planFee.split('.'),
-			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
-
-			Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
-
-			Stripe.card.createToken({
-				number: $scope.cardInfo.cardNumber,
-				cvc: $scope.cardInfo.cardSecNumber,
-				exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
-				exp_year: $scope.cardInfo.cardExpiryYear,
-			}, centAmt);
-
-			$http({
-				method: 'POST',
-				params: {
-					token: $scope.signup.token,
-					centAmt: centAmt,
-					email: $scope.signup.email
-				},
-				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
-			}).
-			success(function(data) {
-				if (data.error) {
-					// replace this with something else later
-					console.log(data.error);
-				}
-				else {
-				}
-			});
-*/
-			$http({
-				method: 'POST', 
-				params: params,
-				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/signup'
-			}).
-			success(function(data, status, headers, config) {
-				LoginService.user = data.user;
+			LoginService.newUser($scope.signup, function(data) {
+				LoginService.user = data.user
 				LoginService.login(data.user._id, false, data.user);
 				$state.go('account.snapshot');
 			});

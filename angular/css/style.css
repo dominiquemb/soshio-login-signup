@@ -53,3 +53,7 @@ body.exiting .main .panel {
 	display: block;
 	background:url('../img/sprites.png') 0px 0px;
 }
+
+.add-account-btn {
+	margin-left: 44px;
+}

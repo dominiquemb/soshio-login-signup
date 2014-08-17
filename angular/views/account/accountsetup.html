@@ -1,12 +1,12 @@
-
-			<form name="signup-accountsetup" class="col-md-12 form-horizontal signup-form" role="form">
+			
+			<form name="new-account" class="col-md-12 form-horizontal signup-form" role="form" ng-submit="accountSetup()">
 				<table>
 					<tbody>
 						<tr>
-							<td colspan="4">
+							<td>
 								<div class="form-group">
-									<select>
-										<option>{{ user.email }}</option>
+									<select ng-model="selectAccount" ng-change="switchAccount(selectAccount)">
+										<option ng-repeat="acct in user.permissions track by acct.name" ng-selected="acct.name === user.permissions[0].name"> {{ acct.name }}</option>
 									</select>
 									:
 								</div>
@@ -16,37 +16,46 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<div class="form-group">
-									<input class="account-name field form-control" type="text" placeholder="New Account Name" required ng-model="signup.accountName" />
+									<input class="account-name field form-control" type="text" placeholder="New Account Name" required ng-model="newAccount.accountName" />
 								</div>
 							</td>
 							<td colspan="2">
 								<div class="form-group">
-									<button class="btn btn-primary">Add Account</button>
+									<button class="add-account-btn btn btn-primary" type="submit">Add Account</button>
 								</div>
 							</td>
 						</tr>
+				</table>
+			</form>
+			<form name="new-admin" class="col-md-12 form-horizontal signup-form" role="form" ng-submit="addAdmin()">
+				<table>
 						<tr>
 							<td colspan="4">
 								<div class="form-group">
 									<h2>Account Permission</h2>
-									<div>accounts go here</div>
+
+									<div ng-repeat="user in getAccountUsers()">{{ user.email }}</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
+								<h2>Add a New Account User</h2>
 								<div class="form-group">
-									<input class="col-md-12 account-email field form-control" type="password" placeholder="Account Admin First and Last Name" required ng-model="signup.accountAdminName" />
+									<input class="col-md-12 account-email field form-control" type="text" placeholder="Account Admin First Name" required ng-model="newUser.firstName" />
 								</div>
 								<div class="form-group">
-									<input class="col-md-12 account-email field form-control" type="password" placeholder="Account Admin User Email" required ng-model="signup.accountEmail" />
+									<input class="col-md-12 account-email field form-control" type="text" placeholder="Account Admin Last Name" required ng-model="newUser.lastName" />
+								</div>
+								<div class="form-group">
+									<input class="col-md-12 account-email field form-control" type="text" placeholder="Account Admin Email" required ng-model="newUser.email" />
 								</div>
 								<div class="form-group">
 									<label>Permission Level</label>
-									<select ng-model="signup.accountPermissions">
-										<option>Read-Only</option>
+									<select ng-model="newUser.newPermissions">
+										<option selected>Read-Only</option>
 										<option>Read and Write</option>
 									</select>
 								</div>
@@ -62,15 +71,11 @@
 						</tr>
 					</table>
 					<div class="pull-right">
-						<a ng-click="to('signup.contactinfo')">
-							<div class="btn btn-primary">
+						<button class="btn btn-primary" ui-sref="account.userinformation">
 								Back
-							</div>
-						</a>
-						<a ng-click="to('signup.plans')">
-							<div class="btn btn-primary">
+						</button>
+						<button class="btn btn-primary" type="submit">
 								Save
-							</div>
 						</a>
 					</div>
 			</form>
