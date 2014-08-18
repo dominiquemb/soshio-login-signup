@@ -21,10 +21,12 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 
 			$scope.user.permissions = newPermissions;
 
-			LoginService.getAccountById($scope.user.permissions[0].id, function(acct) {
-				$scope.currentAccount = acct.account;
-				$scope.processAccountUsers($scope.currentAccount.permissions);
-			});
+			if ($scope.user.permissions[0]) {
+				LoginService.getAccountById($scope.user.permissions[0].id, function(acct) {
+					$scope.currentAccount = acct.account;
+					$scope.processAccountUsers($scope.currentAccount.permissions);
+				});
+			}
 
 			$scope.user.id = data.user._id;
 			$scope.editedUser = $scope.user;
