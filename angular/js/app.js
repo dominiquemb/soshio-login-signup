@@ -46,6 +46,20 @@ var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
 loginApp.service('LoginService', function($http, ipCookie) {
 	return {
 		user: false,
+		getAccountById: function(id, callback) {
+			$http({
+				method: 'POST',
+				params: {
+					id: id
+				},
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/accountbyid'
+			}).
+			success(function(data, status, headers, config) {
+				if (callback) {
+					callback(data, status, headers, config);
+				}
+			});
+		},
 		newUser: function(user, callback) {
 			var params = jQuery.extend(true, {}, user);
 			params.password = CryptoJS.SHA3(user.password);

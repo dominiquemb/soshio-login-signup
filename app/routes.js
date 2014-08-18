@@ -1,5 +1,6 @@
 // app/routes.js
 var User       		= require('../app/models/user');
+var Account		= require('../app/models/account');
 module.exports = function(app, passport, path) {
 
 	// =====================================
@@ -50,6 +51,39 @@ module.exports = function(app, passport, path) {
 		failureFlash : true // allow flash messages
 	}));
 
+	// New Account Creation
+	app.post('/accountsetup', function(req, res) {
+		var newAccount = new Account();
+		newAccount.accountName = req.query.accountName;
+		newAccount.accountEmail = req.query.accountEmail;
+		newAccount.accountAdminName = req.query.accountAdminName;
+		newAccount.accountPermissions = req.query.accountPermissions;	
+
+		newAccount.save(function(err) {
+			if (err) {
+				res.json({'error': 'Unable to create new account'});
+			}
+			else {
+				res.json({'account': newAccount});
+			}
+		});
+		
+	});
+
+	app.post('/accountupdate', function(req, res) {
+		Account.findOne({_id: req.query.id}, function(err, acct) {
+			acct.permissions = req.query.permissions;
+			acct.save();
+			res.json({'account': acct});
+		});
+	});
+
+	app.post('/accountbyid', function(req, res) {
+		Account.findOne({_id: req.query.id}, function(err, acct) {
+			res.json({'account': acct});
+		});
+	});
+
 	// =====================================
 	// PROFILE SECTION =====================
 	// =====================================
@@ -81,7 +115,9 @@ module.exports = function(app, passport, path) {
 					user.local[field] = req.query[field];
 				}
 				else if (field == 'password') {
-					user.local.password = user.generateHash(req.query['password']);
+					if (req.query['password'] !== user.local.password) {
+						user.local.password = user.generateHash(req.query['password']);
+					}
 				}
 			} 
 			user.save();

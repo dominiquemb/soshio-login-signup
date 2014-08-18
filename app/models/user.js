@@ -23,6 +23,7 @@ var userSchema = mongoose.Schema({
 	lastName: String,
 	password: String,
 	phoneNumber: String,
+	permissions: Array,
 	plan: String,
 	variablelimit: String
     },

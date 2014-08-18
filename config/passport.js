@@ -5,6 +5,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 
 // load up the user model
 var User       		= require('../app/models/user');
+var Account       	= require('../app/models/account');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -63,6 +64,7 @@ module.exports = function(passport) {
 
     }));
 
+
  	// =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
@@ -91,7 +93,6 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-
 				// if there is no user with that email
                 // create the user
                 var newUser            = new User();
@@ -111,6 +112,7 @@ module.exports = function(passport) {
 		newUser.local.companyName = req.query.companyName;
 		newUser.local.firstName = req.query.firstName;
 		newUser.local.lastName = req.query.lastName;
+		newUser.local.permissions = req.query.permissions;
 		newUser.local.phoneNumber = req.query.phoneNumber;
 		newUser.local.plan = req.query.plan;
 		newUser.local.variablelimit = req.query.variablelimit;

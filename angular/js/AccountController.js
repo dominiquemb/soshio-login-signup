@@ -20,10 +20,11 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 			});
 
 			$scope.user.permissions = newPermissions;
-			$scope.currentAccount = $scope.user.permissions[0];
-console.log($scope.currentAccount);
-			$scope.processAccountUsers($scope.currentAccount.permissions);
-console.log($scope.currentAccountUsers);
+
+			LoginService.getAccountById($scope.user.permissions[0].id, function(acct) {
+				$scope.currentAccount = acct.account;
+				$scope.processAccountUsers($scope.currentAccount.permissions);
+			});
 
 			$scope.user.id = data.user._id;
 			$scope.editedUser = $scope.user;
@@ -63,8 +64,6 @@ console.log($scope.currentAccountUsers);
 			});
 			$scope.newUser.password = CryptoJS.SHA3(randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'));
 			LoginService.newUser($scope.newUser, function(data) {
-				console.log(data);
-				console.log('user added');
 				LoginService.addAccountUser({
 					account: $scope.currentAccount, 
 					user: data.user
@@ -77,7 +76,6 @@ console.log($scope.currentAccountUsers);
 	};
 
 	$scope.processAccountUsers = function(entries) {
-console.log(entries);
 		$scope.currentAccountUsers = [];
 		angular.forEach(entries, function(acct) {
 			$scope.currentAccountUsers.push(JSON.parse(acct));
