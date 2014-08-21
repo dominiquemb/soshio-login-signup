@@ -106,6 +106,17 @@ module.exports = function(app, passport, path) {
 		res.json({'loggedOut': true});
 	});
 
+	app.post('/billingupdate', function(req, res) {
+		var field;
+		Account.findOne({_id: req._id}, function(err, acct) {
+			for (field in req) {
+				acct[field] = req[field];
+			} 
+			acct.save();
+			res.json({'account': acct});
+		});
+	});
+
 	// Update user
 	app.post('/update', function(req, res) {
 		var field;

@@ -1,7 +1,12 @@
 
-		<div class="col-md-11 panel panel-default pull-left signup">
-			<form name="payment-form" role="form" ng-submit="processSignup()">
+			<form name="payment-form" role="form" ng-submit="updatePayment()">
 				<div class="col-md-6">
+					<div class="form-group">
+						<b>Select Account:</b> 
+						<select ng-model="selectAccount" ng-change="switchAccount(selectAccount)">
+							<option ng-repeat="acct in user.permissions track by acct.name" ng-selected="acct.name === user.permissions[0].name"> {{ acct.name }}</option>
+						</select>
+					</div>
 					<div class="form-group">
 						<h2>Service Plan</h2>
 						<ul class="list-group">
@@ -23,17 +28,17 @@
 						</ul>
 					</div>
 					<div class="form-group">
-						<input type="radio" name="paymentschedule" ng-model="signup.paymentschedule" /> Monthly Payment
+						<input type="radio" name="paymentschedule" ng-model="editedAccount.paymentschedule" /> Monthly Payment
 					</div>
 					<div class="form-group">
-						<input type="radio" name="paymentschedule" ng-model="signup.paymentschedule"  /> Annual Payment (25% discount on monthly fee)
+						<input type="radio" name="paymentschedule" ng-model="editedAccount.paymentschedule"  /> Annual Payment (25% discount on monthly fee)
 					</div>
 					<div class="form-group">
 						<label>	USD$ Monthly Variable Cost Limit</label>
-						<input class="form-control" type="text" ng-disabled="signup.nolimit" ng-model="signup.variablelimit" />
+						<input class="form-control" type="text" ng-disabled="editedAccount.nolimit" ng-model="editedAccount.variablelimit" />
 					</div>
 					<div class="form-group">
-						<input type="checkbox" ng-model="signup.nolimit" /> No Monthly Limit
+						<input type="checkbox" ng-model="editedAccount.nolimit" /> No Monthly Limit
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -48,24 +53,45 @@
 					</div>
 					<div ng-hide="isCard('paypal')">
 						<div class="form-group">
-							<input class="card-name field form-control" type="text" placeholder="Name on Card" required ng-model="cardInfo.cardName" />
+							<h2>Invoice Payment Information</h2>
 						</div>
 						<div class="form-group">
-							<input class="card-number field form-control" type="text" placeholder="Card Number" required ng-model="cardInfo.cardNumber" />
+							<input class="billing-name field form-control" type="text" placeholder="Billing Name" required ng-model="editedAccount.billingName" />
 						</div>
 						<div class="form-group">
-							<input class="card-security-num field form-control" type="text" placeholder="Sec. #" required ng-model="cardInfo.cardSecNumber" />
+							<input class="billing-address field form-control" type="text" placeholder="Billing Address" required ng-model="editedAccount.billingAddress" />
 						</div>
 						<div class="form-group">
-							<input class="card-expiry field form-control" type="text" placeholder="Expiry Month" required ng-model="cardInfo.cardExpiryMonth" />
+							<input class="billing-city field form-control" type="text" placeholder="Billing City" required ng-model="editedAccount.billingCity" />
 						</div>
 						<div class="form-group">
-							<input class="card-expiry field form-control" type="text" placeholder="Expiry Year" required ng-model="cardInfo.cardExpiryYear" />
+							<input class="billing-country field form-control" type="text" placeholder="Billing Zip" required ng-model="editedAccount.billingZip" />
+						</div>
+						<div class="form-group">
+							<input class="billing-country field form-control" type="text" placeholder="Billing Country" required ng-model="editedAccount.billingCountry" />
+						</div>
+						<div class="form-group">
+							<h2>Service Plan</h2>
+						</div>
+						<div class="form-group">
+							<input class="card-name field form-control" type="text" placeholder="Name on Card" required ng-model="editedAccount.cardName" />
+						</div>
+						<div class="form-group">
+							<input class="card-number field form-control" type="text" placeholder="Card Number" required ng-model="editedAccount.cardNumber" />
+						</div>
+						<div class="form-group">
+							<input class="card-security-num field form-control" type="text" placeholder="Sec. #" required ng-model="editedAccount.cardSecNumber" />
+						</div>
+						<div class="form-group">
+							<input class="card-expiry field form-control" type="text" placeholder="Expiry Month" required ng-model="editedAccount.cardExpiryMonth" />
+						</div>
+						<div class="form-group">
+							<input class="card-expiry field form-control" type="text" placeholder="Expiry Year" required ng-model="editedAccount.cardExpiryYear" />
 						</div>
 						<div class="form-group">
 							<div class="pull-right">
-									<button ng-click="to('signup.accountsetup')" class="btn btn-primary">
-										Back
+									<button ui-sref="account.userinformation" class="btn btn-primary">
+										Cancel
 									</button>
 									<button type="submit" class="btn btn-primary">
 										Save
@@ -77,4 +103,3 @@
 					</div>
 				</div>
 			</form>
-		</div>

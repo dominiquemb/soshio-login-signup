@@ -60,39 +60,46 @@ loginApp.service('LoginService', function($http, ipCookie) {
 				}
 			});
 		},
-		newUser: function(user, callback) {
-			var params = jQuery.extend(true, {}, user);
-			params.password = CryptoJS.SHA3(user.password);
-/*
-			var amtArray = $scope.signup.planFee.split('.'),
+		updateBilling: function(acct) {
+			var publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5',
+			publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq',
+			amtArray = acct.planFee.split('.'),
 			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
 
-			Stripe.setPublishableKey($scope.publicStripeApiKeyTesting);
+			Stripe.setPublishableKey(publicStripeApiKeyTesting);
 
 			Stripe.card.createToken({
-				number: $scope.cardInfo.cardNumber,
-				cvc: $scope.cardInfo.cardSecNumber,
-				exp_month: parseInt($scope.cardInfo.cardExpiryMonth),
-				exp_year: $scope.cardInfo.cardExpiryYear,
+				number: acct.cardNumber,
+				cvc: acct.cardSecNumber,
+				exp_month: parseInt(acct.cardExpiryMonth),
+				exp_year: acct.cardExpiryYear,
 			}, centAmt);
 
 			$http({
 				method: 'POST',
 				params: {
-					token: $scope.signup.token,
+					token: acct.token,
 					centAmt: centAmt,
-					email: $scope.signup.email
+					email: acct.email
 				},
-				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/payment'
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/billingupdate'
 			}).
-			success(function(data) {
+			success(function(data, status, headers, config) {
 				if (data.error) {
 					// replace this with something else later
 					console.log(data.error);
 				}
 				else {
+					if (callback) {
+						callback(data, status, headers, config);
+					}
 				}
 			});
+		},
+		newUser: function(user, callback) {
+			var params = jQuery.extend(true, {}, user);
+			params.password = CryptoJS.SHA3(user.password);
+/*
 */
 			$http({
 				method: 'POST', 

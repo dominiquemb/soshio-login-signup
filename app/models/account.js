@@ -7,7 +7,11 @@ var accountSchema = mongoose.Schema({
 	accountName: String,
 	plan: String,
 	permissions: Array,
-	variablelimit: String
+	variablelimit: String,
+	nolimit: Boolean,
+	paymentschedule: String,
+	token: String,
+	planFee: Number
 });
 
 // create the model for users and expose it to our app

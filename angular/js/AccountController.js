@@ -6,6 +6,7 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 	$scope.newAccount = {};
 	$scope.newUser = {};
 	$scope.currentAccountUsers = [];
+	$scope.editedAccount = {};
 
 	$scope.currentAccount = false;
 
@@ -36,6 +37,23 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 		}
 	});
 
+	$scope.selectPlan = function(plan, planFee) {
+		$scope.editedAccount.plan = plan;
+		$scope.editedAccount.planFee = planFee;
+	}
+
+	$scope.selectCard = function(card) {
+		$scope.editedAccount.cardType = card;
+	}
+
+	$scope.isCard = function(card) {
+		return $scope.editedAccount.cardType === card;
+	}
+
+	$scope.isPlan = function(plan) {
+		return $scope.editedAccount.plan === plan;
+	}
+
 	$scope.switchAccount = function(acct) {
 		$scope.currentAccount = acct;
 	};
@@ -44,6 +62,12 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 		$scope.editedUser = $scope.user;
 		$state.go('account.userinformation');
 	};
+
+	$scope.updatePayment = function() {
+		LoginService.updateBilling($scope.editedAccount, function(data) {
+			console.log(data);
+		});
+	}
 	
 	$scope.editUserProfile = function() {
 		if ($scope.editedUser.newPassword === $scope.editedUser.confirmPassword) {
