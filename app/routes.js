@@ -106,6 +106,29 @@ module.exports = function(app, passport, path) {
 		res.json({'loggedOut': true});
 	});
 
+	app.post('/addbilling', function(req, res) {
+		var method;
+		Account.findOne({_id: req.billing.accountId}, function(err, acct) {
+			if (!(acct['billingMethods'] instanceof Array) {
+				acct['billingMethods'] = [];
+			}
+			else {
+				for (method in acct.billingMethods) {
+					if (acct.billingMethods[method].billingNickname === req.billing.billingNickname) {
+						res.json({'error': 'Billing nickname already in use.'});
+						return false;
+					}
+				}
+			}
+			acct.billingMethods.push({
+				token: req.billing.token,
+				billingNickname: req.billing.billingNickname
+			}); 
+			acct.save();
+			res.json({'account': acct});
+		});
+	});
+
 	app.post('/billingupdate', function(req, res) {
 		var field;
 		Account.findOne({_id: req._id}, function(err, acct) {

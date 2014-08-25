@@ -6,7 +6,9 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 	$scope.newAccount = {};
 	$scope.newUser = {};
 	$scope.currentAccountUsers = [];
+	$scope.currentAccountBilling = [];
 	$scope.editedAccount = {};
+	$scope.editOrAdd = false;
 
 	$scope.currentAccount = false;
 
@@ -26,6 +28,7 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 				LoginService.getAccountById($scope.user.permissions[0].id, function(acct) {
 					$scope.currentAccount = acct.account;
 					$scope.processAccountUsers($scope.currentAccount.permissions);
+					$scope.processAccountBilling($scope.currentAccount.billingMethods);
 				});
 			}
 
@@ -63,11 +66,43 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 		$state.go('account.userinformation');
 	};
 
+	$scope.editAccount = function(where, toEdit) {
+		if (toEdit) {
+			$scope.editedAccount = JSON.extend(true, {}, toEdit);
+			$scope.editOrAdd = 'edit';
+		}
+		else {
+			$scope.editOrAdd = 'add';
+		}
+		if (where) {
+			$state.go(where);
+		}
+	};
+
+	$scope.cancelEditAccount = function(where) {
+		$scope.editOrAdd = false;
+		$scope.editedAccount = {};
+		if (where) {
+			$state.go(where);
+		}	
+		else {
+			$state.go('account.userinformation');
+		}
+	};
+
 	$scope.updatePayment = function() {
-		LoginService.updateBilling($scope.editedAccount, function(data) {
-			console.log(data);
-		});
-	}
+		if ($scope.editOrAdd === 'add') {
+			LoginService.addBilling($scope.currentAccount, $scope.editedAccount, function(data) {
+				console.log(data);
+			});
+		}
+		if ($scope.editOrAdd === 'edit') {
+			LoginService.updateBilling($scope.currentAccount, $scope.editedAccount, function(data) {
+				console.log(data);
+			});
+		}
+		$scope.cancelEditAccount('account.billingsummary');
+	};
 	
 	$scope.editUserProfile = function() {
 		if ($scope.editedUser.newPassword === $scope.editedUser.confirmPassword) {
@@ -99,6 +134,13 @@ loginApp.controller('AccountController', function($scope, $rootScope, $timeout, 
 			});
 
 		}
+	};
+
+	$scope.processAccountBilling = function(entries) {
+		$scope.currentAccountBilling = [];
+		angular.forEach(entries, function(billing) {
+			$scope.currentAccountBilling.push(JSON.parse(billing));
+		});
 	};
 
 	$scope.processAccountUsers = function(entries) {

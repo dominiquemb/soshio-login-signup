@@ -56,6 +56,9 @@
 							<h2>Invoice Payment Information</h2>
 						</div>
 						<div class="form-group">
+							<input class="billing-nickname field form-control" type="text" placeholder="Name for this Billing Method" required ng-model="editedAccount.billingNickname" />
+						</div>
+						<div class="form-group">
 							<input class="billing-name field form-control" type="text" placeholder="Billing Name" required ng-model="editedAccount.billingName" />
 						</div>
 						<div class="form-group">
@@ -90,7 +93,7 @@
 						</div>
 						<div class="form-group">
 							<div class="pull-right">
-									<button ui-sref="account.userinformation" class="btn btn-primary">
+									<button ng-click="cancelEditAccount('account.billingsummary')" class="btn btn-primary">
 										Cancel
 									</button>
 									<button type="submit" class="btn btn-primary">

@@ -25,6 +25,10 @@ var loginApp = angular.module('loginApp', ['ui.router', 'ivpusic.cookie'])
 		    url: "/accountsetup",
 		    templateUrl: "views/account/accountsetup.html"
 	    })
+	    .state('account.billingsummary', {
+		    url: "/billing-summary",
+		    templateUrl: "views/account/billingsummary.html"
+	    })
 	    .state('account.plans', {
 		    url: "/plans",
 		    templateUrl: "views/account/planpayment.html"
@@ -60,29 +64,32 @@ loginApp.service('LoginService', function($http, ipCookie) {
 				}
 			});
 		},
-		updateBilling: function(acct) {
+		addBilling: function(acct, billing) {
 			var publicStripeApiKey = 'pk_live_4W3zYxQwD3Q5STZt6DGua5k5',
 			publicStripeApiKeyTesting = 'pk_test_4W3zFdcyJC9Lhc6i5OpFgyhq',
-			amtArray = acct.planFee.split('.'),
+			amtArray = billing.planFee.split('.'),
 			centAmt = Math.round(parseInt(amtArray[0]*100)) + parseInt(amtArray[1]);
 
 			Stripe.setPublishableKey(publicStripeApiKeyTesting);
 
 			Stripe.card.createToken({
-				number: acct.cardNumber,
-				cvc: acct.cardSecNumber,
-				exp_month: parseInt(acct.cardExpiryMonth),
-				exp_year: acct.cardExpiryYear,
+				number: billing.cardNumber,
+				cvc: billing.cardSecNumber,
+				exp_month: parseInt(billing.cardExpiryMonth),
+				exp_year: billing.cardExpiryYear,
 			}, centAmt);
 
 			$http({
 				method: 'POST',
 				params: {
-					token: acct.token,
-					centAmt: centAmt,
-					email: acct.email
+					'billing': {
+						token: acct.token,
+						centAmt: centAmt,
+						billingNickname: acct.billingNickname,
+						accountId: acct._id
+					}
 				},
-				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/billingupdate'
+				url: location.protocol + '//' + location.hostname + ((location.port.length) ? ':' + location.port : "") + '/addbilling'
 			}).
 			success(function(data, status, headers, config) {
 				if (data.error) {

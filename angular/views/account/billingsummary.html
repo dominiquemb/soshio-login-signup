@@ -1,0 +1,33 @@
+					<div class="form-group">
+						<b>Select Account:</b> 
+						<select ng-model="selectAccount" ng-change="switchAccount(selectAccount)">
+							<option ng-repeat="acct in user.permissions track by acct.name" ng-selected="acct.name === user.permissions[0].name"> {{ acct.name }}</option>
+						</select>
+					</div>
+					<table>
+						<tr ng-repeat="billing in currentAccountBilling">
+							<td colspan="1">
+								<div class="form-group">
+									{{ billing.billingNickname }}
+								</div>
+							</td>
+							<td colspan="1">
+								<div class="form-group">
+									<a ng-click="editAccount('account.plans', billing)">Edit</a>
+								</div>
+
+							</td>
+							<td colspan="1">
+								<div class="form-group">
+									<a ng-click="deleteBilling(billing)">Delete</a>
+								</div>
+
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="form-group">
+									<button ng-click="editAccount('account.plans')" class="btn btn-primary">Add Billing Method</button>
+								</div>
+						</tr>
+					</table>
